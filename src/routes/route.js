@@ -17,7 +17,7 @@ router.get('/movies/:indexNumber',function(req,res){
        res.send("not exist")
    }
    else{
-       res.send(movie[id])
+       res.send(movie[valid])
    }
 
 });
