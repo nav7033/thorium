@@ -7,8 +7,17 @@ const createAuthor= async function (req, res) {
 }
 
 const getAuthorsData= async function (req, res) {
-    let authors = await AuthorModel.find()
-    res.send({data: authors})
+    let data=req.body
+    let authors = await AuthorModel.find({
+        author_Id:data.author_Id
+    })
+    if(authors.length>0){
+        let authorCreated= await AuthorModel.create(data)
+        res.send({msg:authorCreated})
+    }
+    else{
+        res.send({msg:"Detail is required "})
+    }
 }
 
 module.exports.createAuthor= createAuthor
