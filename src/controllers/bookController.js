@@ -1,14 +1,43 @@
 const { count } = require("console")
 const BookModel= require("../models/bookModel")
+const authorModel=require("../models/authorModel")
 
 const createBook= async function (req, res) {
     let data= req.body
-
-    let savedData= await BookModel.create(data)
-    res.send({msg: savedData})
+    let savedData= await authorModel.find({
+        "author_id":data.author_id
+    }) 
+    if(savedData.length>0)
+    {
+        let savedData= await BookModel.create(data)
+        res.send({msg: savedData})
+    }
+    else{
+        res.send({"msg":"do not Accept"})
+    }
 }
 
-const getBooksData= async function (req, res) {
+const authorBookPrices= async function(req,res){
+    let savedData=await BookModel.find({
+        "prices.indianPrice":{$gt:50,$lt:100}
+    }).select({
+        author_id:1,
+        _id:0
+    })
+    const numArr=[];   
+    const idNum= savedData.map(function(ele){ele.author_id})
+    for(let i=0;i<idNum.length;i++){
+        const nameData= await authorModel.find({
+            author_id:idNum[i]
+        }).select({author_name:1,_id:0})
+        numArr.push(nameData)
+    }
+        
+    res.send({
+        'msg':numArr
+    })
+}
+/*const getBooksData= async function (req, res) {
     let allBooks= await BookModel.find( {authorName : "HO" } )
     console.log(allBooks)
     if (allBooks.length > 0 )  res.send({msg: allBooks, condition: true})
@@ -41,7 +70,7 @@ const deleteBooks= async function (req, res) {
      
      res.send( { msg: allBooks})
 }
-
+*/
 
 
 
@@ -54,6 +83,8 @@ const deleteBooks= async function (req, res) {
 
 
 module.exports.createBook= createBook
-module.exports.getBooksData= getBooksData
-module.exports.updateBooks= updateBooks
-module.exports.deleteBooks= deleteBooks
+module.exports.authorBookPrices=authorBookPrices
+//module.exports.createBook1=createBook1
+//module.exports.getBooksData= getBooksData
+//module.exports.updateBooks= updateBooks
+//module.exports.deleteBooks= deleteBooks
