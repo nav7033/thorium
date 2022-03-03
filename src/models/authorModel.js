@@ -4,7 +4,8 @@ const authorSchema = new mongoose.Schema( {
     author_Id:Number,
     authorName: String,
     age:Number,
-    address:String
+    address:String,
+    ratings:String
 
 }, { timestamps: true });
 
