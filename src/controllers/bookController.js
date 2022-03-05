@@ -1,4 +1,7 @@
 const { count } = require("console")
+const req = require("express/lib/request")
+const res = require("express/lib/response")
+const { request } = require("http")
 const BookModel= require("../models/bookModel")
 
 const createBook= async function (req, res) {
@@ -7,12 +10,15 @@ const createBook= async function (req, res) {
     let savedData= await BookModel.create(data)
     res.send({msg: savedData})
 }
+const mid1= (req,res,next)=>{
+    console.log("mid 1 excute ")
+    next()
+}
 
-const getBooksData= async function (req, res) {
-    let allBooks= await BookModel.find( {authorName : "HO" } )
+const getBooksData= async function (req, res) { 
+    let allBooks= await BookModel.find(  )
     console.log(allBooks)
-    if (allBooks.length > 0 )  res.send({msg: allBooks, condition: true})
-    else res.send({msg: "No books found" , condition: false})
+    
 }
 
 
@@ -57,3 +63,4 @@ module.exports.createBook= createBook
 module.exports.getBooksData= getBooksData
 module.exports.updateBooks= updateBooks
 module.exports.deleteBooks= deleteBooks
+module.exports.mid1=mid1;

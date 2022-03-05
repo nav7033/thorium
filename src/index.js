@@ -1,4 +1,6 @@
 const express = require('express');
+const moment= require('moment')
+
 const bodyParser = require('body-parser');
 const route = require('./routes/route.js');
 const { default: mongoose } = require('mongoose');
@@ -7,8 +9,17 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const globalMid= (req,res,next)=>{
+    const logged= moment().format()+" , "+req.ip +" , "+req.url
 
-mongoose.connect("mongodb+srv://functionup-cohort:G0Loxqc9wFEGyEeJ@cluster0.rzotr.mongodb.net/Pritesh8769811-DB?retryWrites=true&w=majority", {
+    console.log(logged)
+    next()
+}
+app.use(globalMid)
+//headers['x-forwarded-for']
+
+
+mongoose.connect("mongodb+srv://nav7033:n2cGJvLjcd2n6Jsk@cluster0.uhbum.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
     useNewUrlParser: true
 })
 .then( () => console.log("MongoDb is connected"))
