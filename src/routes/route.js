@@ -3,12 +3,21 @@ const router = express.Router();
 // const UserModel= require("../models/userModel.js")
 const UserController= require("../controllers/userController")
 const BookController= require("../controllers/bookController")
+const orderController=require("../controllers/orderController")
+const productController=require("../controllers/productController")
+const middleware=require("../middleware/middleware")
 
 router.get("/test-me", function (req, res) {
     res.send("My first ever api!")
 })
 
-router.post("/createUser", UserController.createUser  )
+router.post("/createUser",middleware.userValidation,UserController.createUser  )
+
+router.post("/createOrder",middleware.orderValidation, orderController.createOrder)
+
+router.post("/createproduct",middleware.userValidation,productController.createproduct)
+
+router.put("/updated",middleware.updateHeader,UserController.updated)
 
 router.get("/getUsersData", UserController.getUsersData)
 
