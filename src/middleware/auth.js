@@ -1,4 +1,15 @@
 const userModel=require("../models/userModel")
+const jwt = require("jsonwebtoken")
+
+const tokenAuth=function (req,res,next){
+    let userId=req.params.userId
+    let token=req.headers["x-Auth-token"]
+    const decodeToken = jwt.verify(token,"functionup-thorium")
+    if(decodeToken != userId){
+        res.send({msg:"token is invalid pls give valid userId"})
+    }
+    next()
+}
 
 
 
@@ -48,5 +59,6 @@ module.exports={
     loginUserAuth:loginUserAuth,
     getUserAuth:getUserAuth,
     updateAuth:updateAuth,
-    deleteAuth:deleteAuth
+    deleteAuth:deleteAuth,
+    tokenAuth:tokenAuth
 }
