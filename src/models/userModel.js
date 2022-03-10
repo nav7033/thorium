@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema( {
         enum: ["male", "female", "other"]
     },
     age: Number,
+    isDelete:{
+        type:Boolean,
+        default:false
+    },
     posts: {type: [], deafult: []}
 }, { timestamps: true });
 
