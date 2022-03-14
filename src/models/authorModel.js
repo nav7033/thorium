@@ -16,9 +16,12 @@ const authorSchema = new mongoose.Schema( {
         required:true
     },
     email:{
-        type:string,
+        type:String,
         unique:true,
-        required:true
+        required:true,
+        lowercase: true,
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+
     },
     password:{
         type:String,

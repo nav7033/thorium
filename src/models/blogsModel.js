@@ -1,30 +1,46 @@
+const { now } = require('moment');
 const mongoose = require('mongoose');
+
+const ObjectId = mongoose.Schema.Types.ObjectId
 
 
 const blogSchema = new mongoose.Schema( {
-    firstName:{
-        type:String,
-        required:true
-    },
-    lastName:{
-        type:String,
-        required:true
-    },
-    title:{
-        type:String,
-        enum:['Mr','Mrs','Miss'],
-        required:true
-    },
-    email:{
-        type:string,
-        unique:true,
-        required:true
-    },
-    password:{
-        type:String,
-        required:true
-    }
+   title:{
+       type:String,
+       required:true
+   },
+   body:{
+       type:String,
+       required:true
+   },
+   authorId:{
+       type:ObjectId,
+       ref:'Author'
+   },
+   tags:[String],
+   category:{
+       type:String,
+       required:true
+   },
+   subcategory:[String],
+   
+   deleteAt:{
+       type:Date
 
+   },
+   isDeleted:{
+       type:Boolean,
+       default:false
+
+   },
+   publishedAt:{
+       type:Date,
+       default:Date.now
+   },
+   isPublished:{
+       type:Boolean,
+       default:false
+   }   
     
 }, { timestamps: true });
 
