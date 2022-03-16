@@ -1,18 +1,23 @@
 const authorModel = require('../models/authorModel')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+const emailValidator = require('email-validator')
 
 
 const createAuthor = async function (req, res) {
 
     try {
         let author = req.body
+        let email= req.body.email
         if (author == null) {
             return res.status(401).send({ status: false, msg: "pls fill required data" })
         }
-        else {
+        if(emailValidator.validate(email)) {
             let authorCreated = await authorModel.create(author)
             return res.status(201).send({ status: true, data: authorCreated })
+        }
+        else{
+            res.status(400).send({status:false,msg:"invalid Email"})
         }
     }
     catch (err) {

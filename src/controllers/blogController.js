@@ -37,7 +37,7 @@ const getBlog = async function (req, res) {
     try {
         let authorId = req.query.authorId
         let category = req.query.category
-        let allBlogCollection = await blogModel.find({ authorId: authorId, category: category }).populate('authorId')
+        let allBlogCollection = await blogModel.find({ authorId: authorId, category: category ,isPublished:true}).populate('authorId')
         if (!allBlogCollection) {
             return res.status(404).send({ status: false, msg: "not found" })
         }

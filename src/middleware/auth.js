@@ -22,31 +22,26 @@ const authorAuth = async function (req, res, next) {
 
 
 }
-
-const getAuthrize = async function (req, res, next) {
-    try {
+const getAuth = async (req ,res,next) =>{
+    try{
         let authorId = req.body.authorId
-        let token = req.headers["x-api-key"];
-        let decodedToken = jwt.verify(token, "secret-key");
-        if (!decodedToken) {
-            return res.status(404).send({ status: false, msg: "token is invalid" });
+        let token = req.headers["x-api-key"]
+        let decodedToken = jwt.verify(token,"secret-key")
+        if(!authorId){
+            authorId = req.query.authorId 
         }
-        if (!authorId) {
-            authorId = req.query.authorId
+        let authorValid= decodedToken.authorId
+        if(authorValid != authorId){
+            return res.status(401).send({status:false,msg:"token or authorId is not valid"})
         }
-        if (authorId != decodedToken.authorId) {
-            return res.send(404).send({ status: false, msg: "this person is not valid" })
-        }
-        next()
 
     }
-    catch (err) {
-        res.status(500).send({ status: false, msg: err.message })
+    catch(err){
+        res.status(500).send({status:false,msg:err.message})
     }
+} 
 
 
-
-}
 
 
 const authorAuthorization = async function (req, res, next) {
@@ -63,9 +58,9 @@ const authorAuthorization = async function (req, res, next) {
             blogIdValidation = req.query.blogId
 
         }
-        let authorIdValidation = await blogModel.find({ _id:blogIdValidation }).select({ authorId: 1, _id: 0 })
+        let authorIdValidation = await blogModel.find({ _id: blogIdValidation }).select({ authorId: 1, _id: 0 })
         console.log(authorIdValidation)
-        let auth =authorIdValidation.map(ele => ele.authorId)
+        let auth = authorIdValidation.map(ele => ele.authorId)
         console.log(auth)
         let tokenAuthorId = decodeToken.authorId
         console.log(tokenAuthorId)
@@ -85,6 +80,7 @@ const authorAuthorization = async function (req, res, next) {
 module.exports = {
     authorAuth: authorAuth,
     authorAuthorization: authorAuthorization,
-    getAuthrize: getAuthrize
+    getAuth:getAuth
+   
 
 }
