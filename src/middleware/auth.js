@@ -34,6 +34,7 @@ const getAuth = async (req ,res,next) =>{
         if(authorValid != authorId){
             return res.status(401).send({status:false,msg:"token or authorId is not valid"})
         }
+        next()
 
     }
     catch(err){
