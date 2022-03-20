@@ -15,6 +15,7 @@ const blogSchema = new mongoose.Schema( {
    },
    authorId:{
        type:ObjectId,
+       required:true,
        ref:'Author'
    },
    tags:[String],
@@ -25,7 +26,8 @@ const blogSchema = new mongoose.Schema( {
    subcategory:[String],
    
    deleteAt:{
-       type:Date
+       type:Date,
+       default:null
 
    },
    isDeleted:{

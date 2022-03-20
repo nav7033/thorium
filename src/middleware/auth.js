@@ -12,6 +12,7 @@ const authorAuth = async function (req, res, next) {
         if (!decodedToken) {
             return res.status(404).send({ status: false, msg: "token is invalid" });
         }
+        
         next()
 
     }
@@ -29,6 +30,9 @@ const getAuth = async (req ,res,next) =>{
         let decodedToken = jwt.verify(token,"secret-key")
         if(!authorId){
             authorId = req.query.authorId 
+        }
+        if(!authorId){
+            return res.status(400).send({status:false,msg:"authorId required"})
         }
         let authorValid= decodedToken.authorId
         if(authorValid != authorId){

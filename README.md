@@ -1,3 +1,5 @@
+# Project 1-Blog (phase 1 && phase 2)
+
 # Thorium
 Repository for backend cohort - Thorium
 

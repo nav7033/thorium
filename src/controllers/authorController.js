@@ -4,20 +4,50 @@ const jwt = require('jsonwebtoken')
 const emailValidator = require('email-validator')
 
 
+
+const titleValid = function(title){
+   return ["Mr", "Mrs", "Miss"].indexOf(title) !== -1
+
+}
+
+
+
 const createAuthor = async function (req, res) {
 
     try {
         let author = req.body
-        let email= req.body.email
-        if (author == null) {
+        let email = req.body.email
+        
+        if (Object.keys(author) == 0) {
             return res.status(401).send({ status: false, msg: "pls fill required data" })
         }
-        if(emailValidator.validate(email)) {
+        let firstName = author.firstName
+        if(!firstName){
+            res.status(401).send({status:false ,msg:" required FirstName"})
+            return
+        }
+        let lastName = author.lastName
+        if (!lastName) {
+            res.status(401).send({ status: false, msg: "lastName Required" })
+            return
+        }
+        let title = author.title
+        if(!titleValid(title)){
+            res.status(400).send({status:false,msg:"please enter valid title"})
+            return
+        }
+        
+        let password = author.password
+        if (!password) {
+            res.status(401).send({ status: false, msg: "required password" })
+            return
+        }
+        if (emailValidator.validate(email)) {
             let authorCreated = await authorModel.create(author)
             return res.status(201).send({ status: true, data: authorCreated })
         }
-        else{
-            res.status(400).send({status:false,msg:"invalid Email"})
+        else {
+            res.status(400).send({ status: false, msg: "invalid Email" })
         }
     }
     catch (err) {
